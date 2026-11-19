@@ -7,25 +7,34 @@ garbled AI text) around one AI-generated globe illustration (no text in
 it). The entry program itself (main.py) only copies the finished
 entry.png; this script never runs in the grader.
 
-Stories (researched 2026-11-18 ~05:20 UTC, all first reported on
-18 November 2026 unless noted):
-  LEAD  US sinks five Iranian tankers; jets strike an IRGC missile
-        site on Qeshm Island; Iran hits ships near the Strait of
-        Hormuz and fires missiles at a US base in Jordan.
-  HEALTH  US loses measles-free status: 5,400+ cases in 2026.
-  UKRAINE Kyiv strikes the Crimea (Kerch) bridge a second night;
-        Trump flies to China for talks with Xi and Putin.
-  CLIMATE COP31 in Antalya enters its final days, 144 items disputed.
-  ISRAEL  Knesset elects a speaker backed by Netanyahu's opponents.
-  TICKER Prague train crash; 5.3 quake in Romania; Biden memoir;
-        Russia warns France over Ukraine.
+Stories (refreshed 2026-11-19 ~01:00 UTC with the full 18 November 2026
+news day; every story below was first reported on 18 November 2026):
+  LEAD  A day after U.S. forces sank five Iranian tankers, Iran hits
+        back with drones at U.S. bases in Bahrain and Kuwait; the LPG
+        carrier Tara Gas is struck a second time, one seafarer missing;
+        oil tops $100 a barrel.
+  SUMMIT Trump lands in Shenzhen, greeted by Xi on the tarmac; Putin
+        also arrives. First-ever U.S.-China-Russia trilateral on Thursday.
+  MARKETS Anthropic prices its IPO at $83, raising $81B+ — the biggest
+        U.S. listing ever; shares start trading Thursday as ANT.
+  CLIMATE COP31 in Antalya enters its final days; ministers told to
+        "finish today" as drafts leave fossil fuels and finance divided.
+  EARNINGS Nvidia beats and raises ($115.8B revenue) but the SEC opens
+        a probe and the board says Jensen Huang will not return as CEO.
+  TICKER 5.3 quake in Romania; Houthi drones hit a Saudi oil pipeline;
+        NSA classified network goes down; gold falls below $3,800.
+
+Dropped from Round 1 after date checks: measles (PAHO announced
+17 Nov), Kerch bridge collapse (overnight 16-17 Nov), Knesset speaker
+(vote 17 Nov), Prague train crash (morning of 17 Nov), Biden memoir
+(released 17 Nov), Russia warns France (Lavrov spoke 17 Nov).
 """
 
 import os
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-GLOBE = "/tmp/newsimg/media-generation-globe-hero-0-5a916f3e-8133-4f1b-a6f8-32d5abd7de55.png"
+GLOBE = os.path.join(HERE, "assets", "globe.png")
 OUT = os.path.join(HERE, "entry.png")
 
 W, H = 1024, 1024
@@ -118,37 +127,37 @@ def main():
     img.paste(globe, (620, 152))
 
     d.text((52, 156), "LEAD  ·  THE GULF", font=font(23, True), fill=RED)
-    head_fnt = fit_font(d, "U.S. SINKS FIVE IRANIAN TANKERS AS GULF CRISIS DEEPENS",
+    head_fnt = fit_font(d, "IRAN STRIKES U.S. BASES AS GULF WAR WIDENS",
                         548, 3, 40)
     y = draw_lines(d, 52, 192,
-                   wrap(d, "U.S. SINKS FIVE IRANIAN TANKERS AS GULF CRISIS DEEPENS",
+                   wrap(d, "IRAN STRIKES U.S. BASES AS GULF WAR WIDENS",
                         head_fnt, 548),
                    head_fnt, INK, 45)
-    summary = ("American jets also struck an IRGC missile site on Qeshm "
-               "Island. Iran hit ships near the Strait of Hormuz and "
-               "fired missiles at a U.S. base in Jordan. Gulf states "
-               "are on alert.")
+    summary = ("A day after U.S. forces sank five Iranian tankers, "
+               "Tehran hit back with drones at U.S. bases in "
+               "Bahrain and Kuwait. Tara Gas was struck again, one "
+               "seafarer missing; oil topped $100.")
     draw_lines(d, 52, y + 10, wrap(d, summary, font(20), 548),
                font(20), (64, 64, 64), 26)
 
     # ---- Four story tiles ----
     tiles = [
-        ("HEALTH", (13, 122, 110), (232, 244, 242),
-         "U.S. LOSES MEASLES-FREE STATUS",
-         "Measles is no longer eradicated in the U.S. — 5,400 cases "
-         "this year, the worst in 30 years."),
-        ("UKRAINE", (26, 84, 158), (233, 238, 247),
-         "KYIV HITS CRIMEA BRIDGE AGAIN",
-         "A second night of strikes on the Kerch bridge, as Trump "
-         "flies to China for talks with Xi and Putin."),
+        ("SUMMIT", (26, 84, 158), (233, 238, 247),
+         "TRUMP LANDS IN SHENZHEN",
+         "Xi greets him on the tarmac as Putin also arrives. The "
+         "first-ever U.S.-China-Russia trilateral meets Thursday."),
+        ("MARKETS", (13, 122, 110), (232, 244, 242),
+         "ANTHROPIC PRICES IPO AT $83",
+         "Claude's maker raises $81 billion-plus, the biggest U.S. "
+         "listing ever. Shares start trading Thursday as ANT."),
         ("CLIMATE", (46, 125, 50), (235, 243, 230),
          "COP31 ENTERS ITS FINAL DAYS",
-         "Negotiators in Antalya work through 144 disputed items "
-         "before the summit ends on Friday."),
-        ("ISRAEL", (122, 74, 110), (245, 238, 221),
-         "KNESSET ELECTS NEW SPEAKER",
-         "A speaker backed by Netanyahu's opponents wins, as "
-         "coalition talks stay deadlocked."),
+         "Ministers in Antalya are told to \u201cfinish today\u201d as "
+         "drafts leave fossil fuels and finance divided."),
+        ("EARNINGS", (122, 74, 110), (245, 238, 221),
+         "NVIDIA BEATS AND RAISES",
+         "Revenue of $115.8B tops forecasts, but the SEC opens a "
+         "probe and the board says Huang will not return as CEO."),
     ]
     tile_w, tile_h = 472, 192
     positions = [(28, 468), (524, 468), (28, 676), (524, 676)]
@@ -166,9 +175,10 @@ def main():
     # ---- Ticker ----
     d.rectangle([28, 880, 996, 968], fill=DARKBAND)
     d.text((48, 890), "ALSO TODAY", font=font(20, True), fill=GOLD)
-    ticker = ("Trains collide near Prague, dozens hurt  ·  5.3 quake "
-              "strikes Romania  ·  Biden memoir calls Putin a "
-              "'teenager'  ·  Russia warns France over Ukraine")
+    ticker = ("5.3 quake shakes Romania in the night, two hurt  ·  "
+              "Houthi drones hit Saudi oil pipeline  ·  NSA "
+              "classified network goes down  ·  Gold falls below "
+              "$3,800")
     draw_lines(d, 48, 914, wrap(d, ticker, font(18), 920),
                font(18), (255, 255, 255), 22)
 
